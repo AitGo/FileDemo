@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<dir1 name="欧三" parent="null">
+		<dir2 name="欧三1" parent="欧三"></dir2>
+		<dir2 name="欧三2" parent="欧三"></dir2>
+		<dir2 name="欧三3" parent="欧三"></dir2>
+	</dir1>
+	<dir1 name="欧四" parent="null">
+		<dir2 name="欧四1" parent="欧四">
+			<dir3 name="欧四a" parent="欧四1">
+				<dir4 name="欧四#" parent="欧四a"></dir4>
+			</dir3>
+			<dir3 name="欧四b" parent="欧四1"></dir3>
+			<dir3 name="欧四c" parent="欧四1"></dir3>
+		</dir2>
+		<dir2 name="欧四2" parent="欧四"></dir2>
+		<dir2 name="欧四3" parent="欧四"></dir2>
+		
+	</dir1>
+	<dir1 name="成都威特" parent="null">
+		<dir2 name="成都威特1" parent="成都威特"></dir2>
+		<dir2 name="成都威特2" parent="成都威特"></dir2>
+	</dir1>

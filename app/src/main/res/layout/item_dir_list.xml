@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="816dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dip"
+        android:gravity="center_vertical"
+        android:minHeight="50dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/iv_fold_icon"
+            android:layout_width="46dip"
+            android:layout_height="46dip"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_file_detail_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dip"
+            android:text="名称"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/top"
+        android:background="#a2a3a4"
+        />
+
+</RelativeLayout>

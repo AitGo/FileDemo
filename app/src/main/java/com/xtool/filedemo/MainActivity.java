@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private DirListAdapter adapter;
     private List<Dir> roots;
     private int backPosition = 0;
+    private List<Dir> oldDirs;
+    private String LOAD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         lv_dir.setOnItemClickListener(this);
         adapter = new DirListAdapter(this,dirMap.get(Dir.ROOTPATH));
         lv_dir.setAdapter(adapter);
-
     }
 
 
@@ -72,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String parentName = adapter.getDirName(position);
 
         if(parentName.equals("...")) {
+            Log.e("position",position + "");
+            int index = LOAD_PATH.lastIndexOf("/");
+            LOAD_PATH = LOAD_PATH.substring(0,index);
             adapter.setDirs(adapter.getChildrenList(position));
             adapter.notifyDataSetChanged();
             adapter.getDirs().get(backPosition).getChildren().remove(0);
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<Dir> childrenList = dirMap.get(parentName);
 
         if(childrenList != null) {
-            List<Dir> oldDirs = adapter.getDirs();
+            oldDirs = adapter.getDirs();
             if(oldDirs != null && !oldDirs.get(position).getChildren().get(0).getDirName().equals("...")) {
                 backPosition = position;
                 Dir back = new Dir();
@@ -92,12 +97,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(childrenList != null && childrenList.size() > 0) {
             adapter.setDirs(childrenList);
             adapter.notifyDataSetChanged();
+            LOAD_PATH += LOAD_PATH+"/" + parentName;
         }else {
             //到达叶子节点，隐藏listview，显示webview
-
         }
 
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            adapter.setDirs(adapter.getChildrenList(0));
+            if(adapter.getDirs().get(backPosition).getChildren().size() > 0) {
+                adapter.notifyDataSetChanged();
+                adapter.getDirs().get(backPosition).getChildren().remove(0);
+                return true;
+            }else {
+                //结束当前页
+                return super.onKeyDown(keyCode, event);
+            }
+        } else {
+            //结束当前页
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 }

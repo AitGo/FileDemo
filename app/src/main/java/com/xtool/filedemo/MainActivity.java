@@ -22,6 +22,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Map<String,List<Dir>> dirMap;
     private DirListAdapter adapter;
     private List<Dir> roots;
-    private int backPosition = 0;
+//    private int backPosition = 0;
+    private List<Integer> backPositions = new ArrayList<>();
     private List<Dir> oldDirs;
     private String LOAD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             LOAD_PATH = LOAD_PATH.substring(0,index);
             adapter.setDirs(adapter.getChildrenList(position));
             adapter.notifyDataSetChanged();
-            adapter.getDirs().get(backPosition).getChildren().remove(0);
+            adapter.getDirs().get(backPositions.get(backPositions.size()-1)).getChildren().remove(0);
+            backPositions.remove(backPositions.size()-1);
             return;
         }
         List<Dir> childrenList = dirMap.get(parentName);
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(childrenList != null) {
             oldDirs = adapter.getDirs();
             if(oldDirs != null && !oldDirs.get(position).getChildren().get(0).getDirName().equals("...")) {
-                backPosition = position;
+                backPositions.add(position);
                 Dir back = new Dir();
                 back.setChildren(oldDirs);
                 back.setDirName("...");
@@ -108,9 +111,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             adapter.setDirs(adapter.getChildrenList(0));
-            if(adapter.getDirs().get(backPosition).getChildren().size() > 0) {
+            if(adapter.getDirs().get(backPositions.get(backPositions.size()-1)).getChildren().size() > 0) {
                 adapter.notifyDataSetChanged();
-                adapter.getDirs().get(backPosition).getChildren().remove(0);
+                adapter.getDirs().get(backPositions.get(backPositions.size()-1)).getChildren().remove(0);
+                backPositions.remove(backPositions.size()-1);
                 return true;
             }else {
                 //结束当前页

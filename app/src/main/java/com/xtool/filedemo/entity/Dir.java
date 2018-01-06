@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Dir {
 
-    public static String ROOTPATH = "null";
+    public static String ROOTPATH = "config";
     //下一级的子dir
     private List<Dir> children = new ArrayList<>();
     //当前dir名称
